@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="{{url_for('static',filename='css/datacleaning.css')}}">
+
+  <link rel="icon" type="image/x-icon" href="/static/images/data-cleaning_gtr.png">
+
+
+  <style>
+    body,h1,h2,h3,h4,h5,h6 {
+      font-family: "Raleway", sans-serif
+    }
+
+    body,html {
+      height: 100%;
+      line-height: 1.8;
+    }
+
+    .w3-bar .w3-button {
+      padding: 16px;
+    }
+  </style>
+
+  <title>Data Cleaning ex</title>
+
+</head>
+
+
+<body>
+
+  <!-- ----------------------------------------------- -->
+
+  <!-- Navbar (sit on top) -->
+  <div class="w3-top">
+    <div class="w3-bar w3-white w3-card" id="myNavbar">
+      <a href="/" class="w3-bar-item w3-button w3-wide">
+        <img src="/static/images/data-cleaning_gtr.png" alt="Logo" width="30" height="30">
+        DataScrub
+      </a>
+      <!-- Right-sided navbar links -->
+      <div class="w3-right w3-hide-small">
+        <a href="/#about" class="w3-bar-item w3-button">ABOUT</a>
+        <a href="/#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> TEAM</a>
+        <a href="/#work" class="w3-bar-item w3-button"><i class="fa fa-th"></i> WORK</a>
+        <a href="/#pricing" class="w3-bar-item w3-button"><i class="fa fa-usd"></i> PRICING</a>
+        <a href="/#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACT</a>
+      </div>
+      <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+
+      <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium"
+        onclick="w3_open()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Sidebar on small screens when clicking the menu icon -->
+  <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large"
+    style="display:none" id="mySidebar">
+    <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
+    <a href="/about" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a>
+    <a href="/#team" onclick="w3_close()" class="w3-bar-item w3-button">TEAM</a>
+    <a href="/#work" onclick="w3_close()" class="w3-bar-item w3-button">WORK</a>
+    <a href="/#pricing" onclick="w3_close()" class="w3-bar-item w3-button">PRICING</a>
+    <a href="/#contact" onclick="w3_close()" class="w3-bar-item w3-button">CONTACT</a>
+  </nav>
+
+  <!-- ----------------------------------------------- -->
+
+  <div class="container my-3" style="padding-top: 70px;">
+    <h1>Data Cleaning</h1>
+
+    <div class="container my-3 hr">
+      <hr>
+    </div>
+    
+    <br>
+    
+    <div>
+      <h2 style=" display: inline;"> Your Dataset: </h2> <h6 style="display: inline;">&nbsp;{{fileName}}</h6>
+      <br>
+    </div>
+
+    <div id="editableDiv" class="container my-3">
+      <form>
+        <table id="editableTable" class="table table-bordered">
+          <!-- Table content will be dynamically inserted here -->
+        </table>
+      </form>
+    </div>
+    <br>
+    <h6 style="color: red;">Note* - Here we dropped all null values and duplicate data from dataset.</h5>
+
+      <div class="hr">
+        <hr>
+      </div>
+      <br>
+
+      <!-- ----------------------------------------------- -->
+
+      <form action="/Dataset_Cleaning" method="get" enctype="multipart/form-data">
+        <div id="parent_unique_details_heading">
+
+          <div id="parent_unique">
+
+            <div id="child_unique_heading" >
+              <h3>Unique values of column </h3>
+            </div>
+
+            <div id="child_unique_dropdown">
+              <select class="form-select" name="see_col" aria-label="Default select example" required>
+                <option disabled selected> {{see_col}} </option>
+                {% for title in data_list[0] %}
+                <option class="dropdown-item">{{title}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div id="child_unique_seebutton" >
+              <button class="btn btn-outline-success" style="margin-left: 15px; " type="submit">See</button>
+            </div>
+
+          </div>
+
+          <div style="width: 29%;">
+            <div>
+              <h3>Dataset Details</h3>
+            </div>
+          </div>
+
+        </div>
+      </form>
+
+      <!-- ----------------------------------------------- -->
+
+      <div id="parent_unique_detail_table" >
+        <div style="width: 69%;">
+          <div class=" hr">
+            <hr>
+          </div>
+          <div class="container my-3" id="child_unique_tbl">
+            <table class="table">
+              <thead>
+                {% for title in range(6)%}
+                <th scope="col">
+                </th>
+                {% endfor %}
+              </thead>
+              <tbody>
+                {% for i in see_list%}
+                {%if loop.index % 6 == 1%}
+                <tr>
+                  {% endif %}
+                  <td>{{i}}</td>
+                  {%if loop.index % 6 == 0 or loop.last %}
+                </tr>
+                {% endif %}
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="info_div" style="width: 29%;">
+          <div class=" hr">
+            <hr>
+          </div>
+          <div class="container my-3" id="parent_detail_table">
+            <pre>{{details|safe}}</pre>
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <div class=" hr">
+        <hr>
+      </div>
+
+
+      <!-- ----------------------------------------------- -->
+
+
+      <form action="/Dataset_Cleaning" method="get" enctype="multipart/form-data">
+
+        <div id="Operations">
+          <br>
+          <h3>What you want do?</h3>
+          <br>
+          <ul>
+            <li>
+              <h5>Select Column</h5>
+              <select class="form-select" name="select_col_op" aria-label="Default select example" required
+                style="width: 30%;">
+                <option value="" disabled selected>Columns </option>
+                {% for title in data_list[0] %}
+                <option class="dropdown-item">{{title}}</option>
+                {% endfor %}
+              </select>
+            </li>
+            <br>
+            <li>
+              <h5>Choose Operations</h5>
+            </li>
+            <div id="OperationBox">
+            <div id="parent_integer_string_droprow">
+
+              <div class="child_integer_string_droprow">
+                <div class="super_child_integer_string_droprow" >
+                  <input class="w3-check checkbox_choose_oprations" type="checkbox" name="change_data_type_int" value="change_data_type_int"
+                    id="flexCheckDefault_change_data_type_int" >
+                  <label class="w3-check-label" for="flexCheckDefault_change_data_type_int">Change data type to
+                    Integer</label>
+                </div>
+              </div>
+
+              <div class="child_integer_string_droprow">
+                <div class="super_child_integer_string_droprow">
+                  <input class="w3-check checkbox_choose_oprations" type="checkbox" name="change_data_type_string" value="change_data_type_string"
+                    id="flexCheckDefault_change_data_type_string">
+                  <label class="w3-check-label" for="flexCheckDefault_change_data_type_string">Change data type to
+                    string</label>
+                </div>
+              </div>
+
+              <div class="child_integer_string_droprow">
+                <div class="super_child_integer_string_droprow">
+                  <input class="w3-check checkbox_choose_oprations" type="checkbox" name="drop_row" value="drop_row"
+                    id="flexCheckDefault_drop_row">
+                  <label class="w3-check-label" for="flexCheckDefault_drop_row">Drop rows where <input type="text"
+                      name="drop_row_value"></label>
+                  <span class="d-inline-block" tabindex="0" data-toggle="popover" data-bs-trigger="hover focus"
+                    data-bs-content="*if selected column data type is not string then convert it to string first.">
+                    <i style="font-size:24px; cursor: pointer;" class="fa">&nbsp;&nbsp;&#xf05a;</i>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <br>
+            <!-- ----------------------------------- -->
+            <div id="parent_dropcol_dropMultipleRows">
+
+              <div id="child_drop_col">
+                <div class="super_child_dropcol_dropMultipleRows">
+                  <input class="w3-check checkbox_choose_oprations" type="checkbox" name="drop_col" value="drop_col"
+                    id="flexCheckDefault_drop_col" >
+                  <label class="w3-check-label" for="flexCheckDefault_drop_col">Drop columns <input type="number"
+                      name="drop_col_start"> to <input type="number" name="drop_col_end"></label>
+                  <span class="d-inline-block" tabindex="0" data-toggle="popover" data-bs-trigger="hover focus"
+                    data-bs-content="*if you want to drop selected column then check this box only.">
+                    <i style="font-size:24px; cursor: pointer;" class="fa">&nbsp;&nbsp;&#xf05a;</i>
+                  </span>
+                </div>
+              </div>
+
+              <div id="child_dropMultipleRows">
+                <div class="super_child_dropcol_dropMultipleRows" >
+                  <input class="w3-check checkbox_choose_oprations" type="checkbox" name="dropMultipleRows" value="dropMultipleRows"
+                    id="flexCheckDefault_dropMultipleRows_data">
+                  <label class="w3-check-label" for="flexCheckDefault_dropMultipleRows_data">Drop rows <input type="number"
+                      name="dropMultipleRows_start"> to
+                    <input type="number" name="dropMultipleRows_end"></label>
+                  <span class="d-inline-block" tabindex="0" data-toggle="popover" data-bs-trigger="hover focus"
+                    data-bs-content="*if you want to delete only one row, please give only starting index.">
+                    <i style="font-size:24px; cursor: pointer;" class="fa">&nbsp;&nbsp;&#xf05a;</i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!-- ----------------------------------- -->
+            <br>
+            <!-- ============================= unique replace and common replace ================ -->
+            <div id="parent_uniqueCommon_replace">
+
+              <div id="child_unique_replace">
+                <div class="super_child_uniqueCommon_replace">
+                  <input class="w3-check checkbox_choose_oprations" type="checkbox" name="unique_replace" value="unique_replace"
+                    id="flexCheckDefault_unique_replace" >
+                  <label class="w3-check-label" for="flexCheckDefault_unique_replace">Unique Replace <input type="text"
+                      name="unique_replace_value"> to <input type="text" name="unique_replace_to_value"></label>
+                  <span class="d-inline-block" tabindex="0" data-toggle="popover" data-bs-trigger="hover focus"
+                    data-bs-content="*if you want to drop selected column then check this box only.">
+                    <i style="font-size:24px; cursor: pointer;" class="fa">&nbsp;&nbsp;&#xf05a;</i>
+                  </span>
+                </div>
+              </div>
+
+              <div id="child_common_replace">
+                <div class="super_child_uniqueCommon_replace" >
+                  <input class="w3-check checkbox_choose_oprations" type="checkbox" name="common_replace" value="common_replace"
+                    id="flexCheckDefault_common_replace">
+                  <label class="w3-check-label" for="flexCheckDefault_common_replace">Common Replace <input type="text"
+                      name="common_replace_value"> to
+                    <input type="text" name="common_replace_to_value"></label>
+                  <span class="d-inline-block" tabindex="0" data-toggle="popover" data-bs-trigger="hover focus"
+                    data-bs-content="*if selected column data type is not string then convert it to string first.">
+                    <i style="font-size:24px; cursor: pointer;" class="fa">&nbsp;&nbsp;&#xf05a;</i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!-- ============================================= -->
+
+            <br>
+
+            <div id="parent_splitdata">
+              <div class="child_splitdata">
+                <input class="w3-check checkbox_choose_oprations" type="checkbox" name="split_data" value="split_data" id="flexCheckDefault">
+                <label class="w3-check-label" for="flexCheckDefault">Split data at <input type="text"
+                    name="split_from_value"> Join with <input type="text" name="split_join_value"> Start <input
+                    type="number" name="split_start_value"> End <input type="number" name="split_end_value"></label>
+                <span class="d-inline-block" tabindex="0" data-toggle="popover" data-bs-trigger="hover focus"
+                  data-bs-content="*if you want to give input as space, then please type as 'space'.">
+                  <i style="font-size:24px; cursor: pointer;" class="fa">&nbsp;&nbsp;&#xf05a;</i>
+                </span>
+              </div>
+            </div>
+            </div>
+          </ul>
+        </div>
+
+        <button class="btn btn-outline-success" style="margin-top: 25px;" type="submit">Apply</button>
+        <label style="color: red;">{{status}} </label>
+        <br>
+        <button class="btn btn-outline-primary mt-3" onclick="downloadAndDelete()">Download Updated Dataset</button>
+        <br><br>
+        <hr class="hr"><br>
+
+      </form>
+
+  </div>
+
+  <!-- ------------------------------------------------------------------------------------------------------------------------- -->
+  <script>
+    $(document).ready(function () {
+      $('[data-toggle="popover"]').popover();
+    });
+  </script>
+
+  <!------------------------------------------------- -->
+
+  <script>
+    var data = {{ table | safe }};
+
+    function createTable() {
+      var keys = Object.keys(data[0]);
+      var table = '<thead><tr>';
+      keys.forEach(function (key) {
+        table += '<th>' + key + '</th>';
+      });
+      table += '</tr></thead><tbody>';
+      data.forEach(function (row, rowIndex) {
+        table += '<tr>';
+        keys.forEach(function (key) {
+          table += '<td contenteditable="true" onBlur="updateData(' + rowIndex + ', \'' + key + '\', this.innerText)">' + row[key] + '</td>';
+        });
+        table += '</tr>';
+      });
+      table += '</tbody>';
+      $('#editableTable').html(table);
+    }
+
+
+    function updateData(row, col, value) {
+      $.ajax({
+        type: 'POST',
+        contentType: 'application/json;charset=UTF-8',
+        data: JSON.stringify([{ 'row': row, 'col': col, 'value': value }]),
+        url: '/update_data',
+        success: function (response) {
+          console.log('Data updated successfully');
+        }
+      });
+    }
+
+    $(document).ready(function () {
+      createTable();
+    });
+  </script>
+
+  <script>
+
+    // ... your existing JavaScript code ...
+    function downloadAndDelete() {
+      $.ajax({
+        type: 'GET',
+        url: '/download_and_delete',
+        success: function (data) {
+          // Create a Blob from the received data
+          var blob = new Blob([data], { type: 'text/csv' });
+
+          // Create a link element
+          var link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          link.download = 'updated_data.csv';
+
+          // Trigger a click event on the link to start the download
+          link.click();
+
+        }
+      });
+    }
+
+  </script>
+
+  <script>
+    // Toggle between showing and hiding the sidebar when clicking the menu icon
+    var mySidebar = document.getElementById("mySidebar");
+
+    function w3_open() {
+      if (mySidebar.style.display === 'block') {
+        mySidebar.style.display = 'none';
+      } else {
+        mySidebar.style.display = 'block';
+      }
+    }
+
+    // Close the sidebar with the close button
+    function w3_close() {
+        mySidebar.style.display = "none";
+    }
+  </script>
+
+</body>
+
+</html>
